@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Typography } from "@material-ui/core";
+
 import PlayerList from "./components/PlayerList";
 
 class App extends Component {
@@ -23,7 +25,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>home page</h1>
+        <Typography className="text-center" variant="h2">
+          Women World Cup Players
+        </Typography>
         <PlayerList searches={this.state.searches} />
       </div>
     );
