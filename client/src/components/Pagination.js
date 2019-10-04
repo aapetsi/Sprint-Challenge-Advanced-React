@@ -1,16 +1,16 @@
 import React from "react";
 import uuid from "uuid";
 
-const Pagination = ({ playersPerPage, totalPlayers, paginate }) => {
+const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(totalPlayers / playersPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pageNumbers.push(i);
   }
   return (
     <nav>
       {pageNumbers.map(pageNumber => (
         <li key={uuid()}>
-          <a onClick={() => paginate(pageNumbers)} href="!#">
+          <a onClick={() => paginate(pageNumber)} href="!#">
             {pageNumber}
           </a>
         </li>

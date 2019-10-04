@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Player from "./Player";
 import uuid from "uuid";
+// import useLocalStorage from "../hooks/useLocalStorage";
 import { makeStyles, Grid, Paper, Typography } from "@material-ui/core";
+import Pagination from "./Pagination";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,13 +24,35 @@ const PlayerList = ({ searches }) => {
   const classes = useStyles();
   const [players, setPlayers] = useState([]);
 
+  /* Stretch challenge */
+  const [playersList, savePlayersList] = useState([searches]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+  // get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = playersList.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = pageNumber => {
+    return setCurrentPage(pageNumber);
+  };
+  /* Stretch challenge */
+
   useEffect(() => {
     setPlayers(searches);
   }, [searches]);
 
+  useEffect(() => {
+    savePlayersList(searches);
+  }, [savePlayersList, searches]);
+
   if (players.length === 0) {
     return <h2>Loading...</h2>;
   }
+
+  console.log(currentPosts);
 
   return (
     <div>
@@ -38,7 +62,7 @@ const PlayerList = ({ searches }) => {
       <Grid container className={classes.root} spacing={2}>
         <Grid item xs={12}>
           <Grid container justify="center" spacing={2}>
-            {players.map(player => (
+            {currentPosts.map(player => (
               <Grid key={uuid()} item>
                 <Paper className={classes.paper}>
                   <Player
@@ -53,6 +77,11 @@ const PlayerList = ({ searches }) => {
           </Grid>
         </Grid>
       </Grid>
+      <Pagination
+        paginate={paginate}
+        postsPerPage={postsPerPage}
+        totalPosts={searches.length}
+      />
     </div>
   );
 };
