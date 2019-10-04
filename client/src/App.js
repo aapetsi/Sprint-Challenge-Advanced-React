@@ -13,6 +13,7 @@ class App extends Component {
       .then(res => {
         let searches = res.data;
         this.setState({ searches });
+        localStorage.setItem("playerSearches", this.state.searches);
       })
       .catch(err => {
         console.log(err.response);
