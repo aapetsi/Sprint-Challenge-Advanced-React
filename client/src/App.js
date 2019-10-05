@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import axios from "axios";
+import { Typography } from "@material-ui/core";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import PlayerList from "./components/PlayerList";
+
+class App extends Component {
+  state = {
+    searches: []
+  };
+
+  componentDidMount() {
+    axios
+      .get("/api/players")
+      .then(res => {
+        let searches = res.data;
+        this.setState({ searches });
+        localStorage.setItem("playerSearches", this.state.searches);
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  }
+
+  render() {
+    return (
+      <div>
+        <Typography className="text-center" variant="h2">
+          Women World Cup Players
+        </Typography>
+        <PlayerList searches={this.state.searches} />
+      </div>
+    );
+  }
 }
 
 export default App;
